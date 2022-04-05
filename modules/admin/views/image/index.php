@@ -29,7 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'url:url',
+            [
+                'format' => 'html',
+                'label' => 'Image',
+                'value' => function ($data) {
+                    return Html::img($data->getImage(), ['width' => 150]);
+                }
+            ],
             [
                 'class' => ActionColumn::className(),
 //                'urlCreator' => function ($action, Image $model, $key, $index, $column) {

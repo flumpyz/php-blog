@@ -43,6 +43,7 @@ class Post extends \yii\db\ActiveRecord
             [['title'], 'string', 'max' => 127],
             [['date'], 'date', 'format' => 'php:Y-m-d'],
             [['date'], 'default', 'value' => date('Y-m-d')],
+            [['category_id'], 'number']
 //            [['content'], 'string'],
 //            [['image_id', 'viewed', 'user_id', 'category_id'], 'default', 'value' => null],
 //            [['image_id', 'viewed', 'user_id', 'category_id'], 'integer'],
@@ -111,5 +112,16 @@ class Post extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function saveCategory($category_id)
+    {
+        $category = Category::findOne($category_id);
+
+        if ($category != null)
+        {
+            $this->link('category', $category);
+            return true;
+        }
     }
 }

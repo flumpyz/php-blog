@@ -3,10 +3,13 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Image;
+use app\models\ImageLoading;
 use app\models\ImageSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ImageController implements the CRUD actions for Image model.
@@ -130,5 +133,24 @@ class ImageController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionSetImage($id)
+    {
+        $model = new ImageLoading;
+
+        if (Yii::$app->request->isPost) {
+            $img = $this->findModel($id);
+
+            $file = UploadedFile::getInstance($model, 'image');
+
+            if ($img->saveImage($model->uploadFile($file, $img->url)))
+            {
+                return $this->redirect(['view', 'id' => $img->id]);
+            }
+
+        }
+
+        return $this->render('image', ['model'=>$model]);
     }
 }

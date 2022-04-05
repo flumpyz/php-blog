@@ -52,4 +52,20 @@ class Image extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Post::className(), ['image_id' => 'id']);
     }
+
+    public function saveImage($filename)
+    {
+        $this->url = $filename;
+        return $this->save(false);
+    }
+
+    public function getImage()
+    {
+        if ($this->url)
+        {
+            return '/uploads/' . $this->url;
+        }
+
+        return '/no-image.png';
+    }
 }
