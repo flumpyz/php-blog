@@ -16,17 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'image_id')->textInput() ?>
-
     <?= $form->field($model, 'date')->textInput() ?>
-
-    <?= $form->field($model, 'viewed')->textInput() ?>
-
-    <?= $form->field($model, 'is_deleted')->checkbox() ?>
-
-    <?= $form->field($model, 'user_id')->textInput() ?>
-
-    <?= $form->field($model, 'category_id')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

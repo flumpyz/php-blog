@@ -38,15 +38,20 @@ class Post extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['content'], 'string'],
-            [['image_id', 'viewed', 'user_id', 'category_id'], 'default', 'value' => null],
-            [['image_id', 'viewed', 'user_id', 'category_id'], 'integer'],
-            [['date'], 'safe'],
-            [['is_deleted'], 'boolean'],
-            [['title'], 'string', 'max' => 255],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::className(), 'targetAttribute' => ['image_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['title'], 'required'],
+            [['title', 'content'], 'string'],
+            [['title'], 'string', 'max' => 127],
+            [['date'], 'date', 'format' => 'php:Y-m-d'],
+            [['date'], 'default', 'value' => date('Y-m-d')],
+//            [['content'], 'string'],
+//            [['image_id', 'viewed', 'user_id', 'category_id'], 'default', 'value' => null],
+//            [['image_id', 'viewed', 'user_id', 'category_id'], 'integer'],
+//            [['date'], 'safe'],
+//            [['is_deleted'], 'boolean'],
+//            [['title'], 'string', 'max' => 255],
+//            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+//            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::className(), 'targetAttribute' => ['image_id' => 'id']],
+//            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
