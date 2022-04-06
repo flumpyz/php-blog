@@ -38,6 +38,7 @@ class Comment extends \yii\db\ActiveRecord
             [['user_id', 'post_id'], 'default', 'value' => null],
             [['user_id', 'post_id'], 'integer'],
             [['date'], 'safe'],
+            [['date'], 'default', 'value' => date('Y-m-d')],
             [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Post::className(), 'targetAttribute' => ['post_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -77,4 +78,15 @@ class Comment extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public function getDate()
+    {
+        return Yii::$app->formatter->asDate($this->date);
+    }
+
+//    public function saveComment()
+//    {
+//        $this->user_id = Yii::$app->user->id;
+//        return $this->save();
+//    }
 }

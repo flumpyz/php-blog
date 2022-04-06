@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Category;
+use app\models\CommentForm;
 use app\models\Post;
 use Yii;
 use yii\data\Pagination;
@@ -87,12 +88,16 @@ class SiteController extends Controller
         $popular = Post::getPopular();
         $recent = Post::getRecent();
         $categories = Category::getAll();
+        $comments = $post->getComments();
+        $commentForm = new CommentForm();
 
         return $this->render('post', [
             'post' => $post,
             'popular' => $popular,
             'recent' => $recent,
             'categories' => $categories,
+            'comments' => $comments,
+            'commentForm' => $commentForm,
         ]);
     }
 
@@ -111,6 +116,20 @@ class SiteController extends Controller
             'recent' => $recent,
             'categories' => $categories,
         ]);
+    }
+
+    public function actionComment($id)
+    {
+        $model = new CommentForm();
+
+        if (Yii::$app->request->isPost)
+        {
+            $model->load(Yii::$app->request->post());
+            if ($model->saveComment($id))
+            {
+                return $this->redirect(['site/view', 'id' => $id]);
+            }
+        }
     }
 
     /**

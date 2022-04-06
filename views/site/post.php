@@ -14,7 +14,9 @@ use yii\helpers\Url;
                     </div>
                     <div class="post-content">
                         <header class="entry-header text-center text-uppercase">
-                            <h6><a href="<?= Url::toRoute(['site/category', 'id' => $post->category->id]); ?>"> <?= $post->category->name; ?></a></h6>
+                            <h6>
+                                <a href="<?= Url::toRoute(['site/category', 'id' => $post->category->id]); ?>"> <?= $post->category->name; ?></a>
+                            </h6>
 
                             <h1 class="entry-title"><a href="blog.html"><?= $post->title; ?></a></h1>
 
@@ -26,7 +28,7 @@ use yii\helpers\Url;
 
                         <div class="social-share">
 							<span
-                                class="social-share-title pull-left text-capitalize">By Rubel On <?= $post->getDate(); ?></span>
+                                    class="social-share-title pull-left text-capitalize">By Rubel On <?= $post->getDate(); ?></span>
                             <ul class="text-center pull-right">
                                 <li><a class="s-facebook" href="#"><i class="fa fa-facebook"></i></a></li>
                                 <li><a class="s-twitter" href="#"><i class="fa fa-twitter"></i></a></li>
@@ -37,43 +39,53 @@ use yii\helpers\Url;
                         </div>
                     </div>
                 </article>
-                <div class="bottom-comment"><!--bottom comment-->
-                    <h4>3 comments</h4>
 
-                    <div class="comment-img">
-                        <img class="img-circle" src="/public/images/comment-img.jpg" alt="">
-                    </div>
+                <?php if (!empty($comments)): ?>
 
-                    <div class="comment-text">
-                        <a href="#" class="replay btn pull-right"> Replay</a>
-                        <h5>Rubel Miah</h5>
+                    <?php foreach ($comments as $comment): ?>
+                        <div class="bottom-comment"><!--bottom comment-->
+                            <h4>Comment</h4>
 
-                        <p class="comment-date">
-                            December, 02, 2015 at 5:57 PM
-                        </p>
+                            <div class="comment-img">
+                                <img class="img-circle" src="/public/images/comment-img.jpg" alt="">
+                            </div>
+
+                            <div class="comment-text">
+                                <a href="#" class="replay btn pull-right"> Replay</a>
+                                <h5><?= $comment->user->nickname; ?></h5>
+
+                                <p class="comment-date">
+                                    <?= $comment->getDate(); ?>
+                                </p>
 
 
-                        <p class="para">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                            diam nonumy
-                            eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-                            voluptua. At vero eos et cusam et justo duo dolores et ea rebum.</p>
-                    </div>
-                </div>
-                <!-- end bottom comment-->
+                                <p class="para"> <?= $comment->text; ?> </p>
+                            </div>
+                        </div>
+                        <!-- end bottom comment-->
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
 
                 <div class="leave-comment"><!--leave comment-->
                     <h4>Leave a reply</h4>
 
+                    <?php $form = \yii\widgets\ActiveForm::begin([
+                            'action' => ['site/comment', 'id' => $post->id],
+                            'options' => ['class' => 'form-horizontal contact-form', 'role' => 'form']
+                        ]
+                    ) ?>
                     <form class="form-horizontal contact-form" role="form" method="post" action="#">
 
                         <div class="form-group">
                             <div class="col-md-12">
-										<textarea class="form-control" rows="6" name="message"
-                                                  placeholder="Write Message"></textarea>
+										<?= $form->field($commentForm, 'comment')
+                                            ->textarea(['class' => 'form-control', 'placeholder' => 'Write Your comment...'])->label(false)?>
                             </div>
                         </div>
-                        <a href="#" class="btn send-btn">Post Comment</a>
+                        <button type="submit" class="btn send-btn">Post Comment</button>
                     </form>
+                    <?php $form = \yii\widgets\ActiveForm::end() ?>
                 </div><!--end leave comment-->
             </div>
             <?= $this->render('/components/sidebar', [

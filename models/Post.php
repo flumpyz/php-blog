@@ -90,11 +90,11 @@ class Post extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Comments]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return Post[]|array|\yii\db\ActiveQuery|\yii\db\ActiveRecord[]
      */
     public function getComments()
     {
-        return $this->hasMany(Comment::className(), ['post_id' => 'id']);
+        return $this->hasMany(Comment::className(), ['post_id' => 'id'])->all();
     }
 
     /**
@@ -104,14 +104,6 @@ class Post extends \yii\db\ActiveRecord
      */
     public function getImage()
     {
-//        $image = $this->hasOne(Image::className(), ['id' => 'image_id'])->;
-//        if ($image->url)
-//        {
-//            return '/uploads/' . $image->url;
-//        }
-//
-//        return '/no-image.png';
-
         return $this->hasOne(Image::className(), ['id' => 'image_id']);
     }
 
