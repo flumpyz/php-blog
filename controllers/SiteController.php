@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Category;
 use app\models\Post;
 use Yii;
 use yii\data\Pagination;
@@ -63,17 +64,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $query = Post::find();
-        $count = $query->count();
-        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 1]);
+        $data = Post::getAll(1);
 
-        $posts = $query->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
+        $popular = Post::getPopular();
+        $recent = Post::getRecent();
+        $categories = Category::getAll();
 
         return $this->render('index', [
-            'posts' => $posts,
-            'pagination' => $pagination
+            'posts' => $data['posts'],
+            'pagination' => $data['pagination'],
+            'popular' => $popular,
+            'recent' => $recent,
+            'categories' => $categories,
         ]);
     }
 

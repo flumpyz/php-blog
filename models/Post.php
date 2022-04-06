@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\data\Pagination;
 
 /**
  * This is the model class for table "post".
@@ -142,5 +143,35 @@ class Post extends \yii\db\ActiveRecord
             $this->link('image', $image);
             return true;
         }
+    }
+
+    public function getDate()
+    {
+        return Yii::$app->formatter->asDate($this->date);
+    }
+
+    public static function getAll($pageSize = 3)
+    {
+        $query = Post::find();
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
+        $posts = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        $data['pagination'] = $pagination;
+        $data['posts'] = $posts;
+
+        return $data;
+    }
+
+    public static function getPopular()
+    {
+        return Post::find()->orderBy('viewed desc')->limit(3)->all();
+    }
+
+    public static function getRecent()
+    {
+        return Post::find()->orderBy('date asc')->limit(4)->all();
     }
 }
