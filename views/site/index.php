@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
 ?>
@@ -10,18 +11,18 @@ use yii\widgets\LinkPager;
                 <?php foreach ($posts as $post): ?>
                     <article class="post">
                         <div class="post-thumb">
-                            <a href="blog.html"><img src="<?=
+                            <a href="<?= Url::toRoute(['site/view', 'id' => $post->id]); ?>"><img src="<?=
                                 $post->image->url ? '/uploads/' . $post->image->url : '/no-image.png'; ?>" alt=""></a>
 
-                            <a href="blog.html" class="post-thumb-overlay text-center">
+                            <a href="<?= Url::toRoute(['site/view', 'id' => $post->id]); ?>" class="post-thumb-overlay text-center">
                                 <div class="text-uppercase text-center">View Post</div>
                             </a>
                         </div>
                         <div class="post-content">
                             <header class="entry-header text-center text-uppercase">
-                                <h6><a href="#"> <?= $post->category->name; ?></a></h6>
+                                <h6><a href="<?= Url::toRoute(['site/category', 'id' => $post->category->id]); ?>"> <?= $post->category->name; ?></a></h6>
 
-                                <h1 class="entry-title"><a href="blog.html"><?= $post->title; ?></a></h1>
+                                <h1 class="entry-title"><a href="<?= Url::toRoute(['site/view', 'id' => $post->id]); ?>"><?= $post->title; ?></a></h1>
 
 
                             </header>
@@ -50,67 +51,11 @@ use yii\widgets\LinkPager;
                 ]);
                 ?>
             </div>
-            <div class="col-md-4" data-sticky_column>
-                <div class="primary-sidebar">
-
-                    <aside class="widget">
-                        <h3 class="widget-title text-uppercase text-center">Popular Posts</h3>
-
-                        <?php foreach ($popular as $post):?>
-                            <div class="popular-post">
-
-                                <a href="#" class="popular-img"><img src="<?=
-                                    $post->image->url ? '/uploads/' . $post->image->url : '/no-image.png'; ?>" alt="">
-
-                                    <div class="p-overlay"></div>
-                                </a>
-
-                                <div class="p-content">
-                                    <a href="#" class="text-uppercase"><?= $post->title; ?>></a>
-                                    <span class="p-date"><?= $post->getDate(); ?></span>
-
-                                </div>
-                            </div>
-                        <?php endforeach;?>
-
-                    </aside>
-                    <aside class="widget pos-padding">
-                        <h3 class="widget-title text-uppercase text-center">Recent Posts</h3>
-
-                        <?php foreach ($recent as $post):?>
-                            <div class="thumb-latest-posts">
-
-
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#" class="popular-img"><img src="<?=
-                                            $post->image->url ? '/uploads/' . $post->image->url : '/no-image.png'; ?>" alt="">
-                                            <div class="p-overlay"></div>
-                                        </a>
-                                    </div>
-                                    <div class="p-content">
-                                        <a href="#" class="text-uppercase"><?= $post->title; ?></a>
-                                        <span class="p-date"><?= $post->getDate(); ?></span>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach;?>
-
-                    </aside>
-                    <aside class="widget border pos-padding">
-                        <h3 class="widget-title text-uppercase text-center">Categories</h3>
-                        <ul>
-                            <?php foreach ($categories as $category):?>
-                                <li>
-                                    <a href="#"><?= $category->name; ?></a>
-                                    <span class="post-count pull-right"> (<?= $category->getPostsCount(); ?>)</span>
-                                </li>
-                            <?php endforeach;?>
-
-                        </ul>
-                    </aside>
-                </div>
-            </div>
+            <?= $this->render('/components/sidebar', [
+                'popular' => $popular,
+                'recent' => $recent,
+                'categories' => $categories,
+            ]); ?>
         </div>
     </div>
 </div>
