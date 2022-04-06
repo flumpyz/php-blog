@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\LoginForm;
+use app\models\SignupForm;
 use app\models\User;
 use Yii;
 use yii\web\Controller;
@@ -27,14 +28,26 @@ class AuthenticationController extends Controller
         }
 
         $model->password = '';
-        return $this->render('/site/login', [
+        return $this->render('login', [
             'model' => $model,
         ]);
     }
 
     public function actionSignup()
     {
-//        return $this->render('signup');
+        $model = new SignupForm();
+
+        if (Yii::$app->request->isPost)
+        {
+            $model->load(Yii::$app->request->post());
+            if ($model->signup())
+            {
+                return $this->redirect(['authentication/login']);
+            }
+
+        }
+
+        return $this->render('signup', ['model' => $model]);
     }
 
     /**

@@ -80,7 +80,7 @@ MainAsset::register($this);
                         <?php else: ?>
                             <?= Html::beginForm(['/authentication/logout'], 'post')
                             . Html::submitButton(
-                                'Logout (' . Yii::$app->user->identity->name . ')',
+                                'Logout (' . Yii::$app->user->identity->nickname . ')',
                                 ['class' => 'btn btn-link logout', 'style'=>"padding-top:10px;"]
                             )
                             . Html::endForm() ?>
