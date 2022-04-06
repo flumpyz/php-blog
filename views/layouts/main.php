@@ -10,6 +10,7 @@ use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
+use yii\helpers\Url;
 
 MainAsset::register($this);
 ?>
@@ -41,18 +42,7 @@ MainAsset::register($this);
 //            ['label' => 'Home', 'url' => ['/site/index']],
 //            ['label' => 'About', 'url' => ['/site/about']],
 //            ['label' => 'Contact', 'url' => ['/site/contact']],
-//            Yii::$app->user->isGuest ? (
-//                ['label' => 'Login', 'url' => ['/site/login']]
-//            ) : (
-//                '<li>'
-//                . Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline'])
-//                . Html::submitButton(
-//                    'Logout (' . Yii::$app->user->identity->username . ')',
-//                    ['class' => 'btn btn-link logout']
-//                )
-//                . Html::endForm()
-//                . '</li>'
-//            )
+
 //        ],
 //    ]);
 //    NavBar::end();
@@ -84,8 +74,17 @@ MainAsset::register($this);
                 </ul>
                 <div class="i_con">
                     <ul class="nav navbar-nav text-uppercase">
-                        <li><a href="/site/login">Login</a></li>
-                        <li><a href="/site/signup">Register</a></li>
+                        <?php if(Yii::$app->user->isGuest):?>
+                            <li><a href="<?= Url::toRoute(['authentication/login'])?>">Login</a></li>
+                            <li><a href="<?= Url::toRoute(['authentication/signup'])?>">Register</a></li>
+                        <?php else: ?>
+                            <?= Html::beginForm(['/authentication/logout'], 'post')
+                            . Html::submitButton(
+                                'Logout (' . Yii::$app->user->identity->name . ')',
+                                ['class' => 'btn btn-link logout', 'style'=>"padding-top:10px;"]
+                            )
+                            . Html::endForm() ?>
+                        <?php endif;?>
                     </ul>
                 </div>
 
