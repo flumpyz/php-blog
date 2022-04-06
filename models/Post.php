@@ -43,12 +43,14 @@ class Post extends \yii\db\ActiveRecord
             [['title'], 'string', 'max' => 127],
             [['date'], 'date', 'format' => 'php:Y-m-d'],
             [['date'], 'default', 'value' => date('Y-m-d')],
-            [['category_id'], 'number']
+            [['category_id'], 'number'],
+//            [['is_deleted'], 'boolean'],
+//            [['is_deleted'], 'default', 'value' => false],
 //            [['content'], 'string'],
 //            [['image_id', 'viewed', 'user_id', 'category_id'], 'default', 'value' => null],
 //            [['image_id', 'viewed', 'user_id', 'category_id'], 'integer'],
 //            [['date'], 'safe'],
-//            [['is_deleted'], 'boolean'],
+
 //            [['title'], 'string', 'max' => 255],
 //            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
 //            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::className(), 'targetAttribute' => ['image_id' => 'id']],
@@ -101,6 +103,14 @@ class Post extends \yii\db\ActiveRecord
      */
     public function getImage()
     {
+//        $image = $this->hasOne(Image::className(), ['id' => 'image_id'])->;
+//        if ($image->url)
+//        {
+//            return '/uploads/' . $image->url;
+//        }
+//
+//        return '/no-image.png';
+
         return $this->hasOne(Image::className(), ['id' => 'image_id']);
     }
 
@@ -118,9 +128,18 @@ class Post extends \yii\db\ActiveRecord
     {
         $category = Category::findOne($category_id);
 
-        if ($category != null)
-        {
+        if ($category != null) {
             $this->link('category', $category);
+            return true;
+        }
+    }
+
+    public function saveImage($image_id)
+    {
+        $image = Image::findOne($image_id);
+
+        if ($image != null) {
+            $this->link('image', $image);
             return true;
         }
     }

@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Category;
+use app\models\Image;
 use app\models\Post;
 use app\models\PostSearch;
 use Yii;
@@ -154,6 +155,28 @@ class PostController extends Controller
             'post'=>$post,
             'selectedCategory'=>$selectedCategory,
             'categories'=>$categories
+        ]);
+    }
+
+    public function actionSetImage($id)
+    {
+        $post = $this->findModel($id);
+        $selectedImage = $post->image ? $post->image->id : '0';
+        $images = ArrayHelper::map(Image::find()->all(), 'id', 'id');
+
+        if (Yii::$app->request->isPost)
+        {
+            $image = Yii::$app->request->post('image');
+            if ($post->saveImage($image))
+            {
+                return $this->redirect(['view', 'id'=>$post->id]);
+            }
+        }
+
+        return $this->render('image', [
+            'post'=>$post,
+            'selectedImage'=>$selectedImage,
+            'images'=>$images
         ]);
     }
 }
