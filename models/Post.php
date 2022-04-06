@@ -174,4 +174,10 @@ class Post extends \yii\db\ActiveRecord
     {
         return Post::find()->orderBy('date asc')->limit(4)->all();
     }
+
+    public function savePost()
+    {
+        $this->user_id = Yii::$app->user->id;
+        return $this->save();
+    }
 }

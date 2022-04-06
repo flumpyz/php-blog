@@ -31,7 +31,7 @@ use yii\widgets\LinkPager;
                                 </p>
 
                                 <div class="btn-continue-reading text-center text-uppercase">
-                                    <a href="blog.html" class="more-link">Continue Reading</a>
+                                    <a href="<?= Url::toRoute(['site/view', 'id' => $post->id]); ?>" class="more-link">Continue Reading</a>
                                 </div>
                             </div>
                             <div class="social-share">
